@@ -1,8 +1,6 @@
 (tutorial-7-wrapping-up)=
 # 7. Wrapping Up
 
-# 7. Wrapping Up
-
 This section concludes the Tutorial by freeing up the resources used so far.
 
 ## Clean up

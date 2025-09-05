@@ -1,7 +1,5 @@
 (how-to-manage-service-accounts-using-integration-hub)=
-# Using Integration Hub
-
-## Configure service accounts using the Integration Hub charm
+# Configure service accounts using the Integration Hub charm
 
 The Integration Hub charm allows seamless configuration of Charmed Apache Spark service accounts
 via Juju relations, therefore providing a charming, integrated user experience. 
@@ -19,7 +17,7 @@ accounts created either with the `spark-client` snap or using the `spark8t` pyth
 Refer to the how-to guides for more information on the [snap usage](/how-to/manage-service-accounts/using-spark-client-snap) and 
 on the [python library](/how-to/manage-service-accounts/using-python).
 
-### Enable object storage integration
+## Enable object storage integration
 
 Integration Hub for Apache Spark can consume:
 
@@ -27,7 +25,7 @@ Integration Hub for Apache Spark can consume:
 object storage system
 * `azure-storage-credentials` relation provided by the [Azure Storage Integrator](https://charmhub.io/azure-storage-integrator) to enable integration with Azure Storages, such as Azure Blob Storage (WASB) and Azure DataLake Gen2 Storage (ABFS).
 
-#### S3-compatible object storage
+### S3-compatible object storage
 
 To enable integration with an S3-compatible storage, deploy the S3-integrator charm:
 
@@ -81,7 +79,7 @@ spark.hadoop.fs.s3a.endpoint=<S3_ENDPOINT>
 spark.hadoop.fs.s3a.secret.key=<S3_SECRET_KEY>
 ```
 
-#### Azure storage
+### Azure storage
 
 To enable integration with an Azure storage, deploy the Azure Storage Integrator charm
 
@@ -144,7 +142,7 @@ You should see the following configuration automatically added to your service-a
 spark.hadoop.fs.azure.account.key.<AZURE_STORAGE_ACCOUNT>.dfs.core.windows.net=<AZURE_STORAGE_KEY>
 ```
 
-### Enable Monitoring with Prometheus pushgateway
+## Enable Monitoring with Prometheus pushgateway
 
 The Integration Hub can consume the `pushgateway` relation provided by the 
 [Prometheus Pushgateway charm](https://charmhub.io/prometheus-pushgateway) to provide integration with an object storage. 
@@ -182,7 +180,7 @@ spark.metrics.conf.executor.sink.prometheus.metrics-name-capture-regex=([a-z0-9]
 spark.metrics.conf.executor.sink.prometheus.metrics-name-replacement=\$2
 ```
 
-### Additional configurations
+## Additional configurations
 
 Besides the configurations enabled by relations, a set of additional configurations can also 
 be added directly using configuration options. 
@@ -198,4 +196,3 @@ To list all configuration properties and how they translate to Charmed Apache Sp
 ```shell
 juju config integration-hub
 ```
-

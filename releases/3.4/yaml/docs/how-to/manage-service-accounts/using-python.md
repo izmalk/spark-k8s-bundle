@@ -1,19 +1,17 @@
 (how-to-manage-service-accounts-using-python)=
-# Using Python
-
 ## Manage Service Accounts using the Python API
 
 The `spark-client` snap relies on the [`spark8t` toolkit](https://github.com/canonical/spark-k8s-toolkit-py). `spark8t` provides both a CLI and a programmatic interface to enhanced Apache Spark client functionalities. 
 
 Here we describe how to use the `spark8t` toolkit (as part of the `spark-client` snap) to manage service accounts using Python.
 
-### Preparation
+## Preparation
 
 The `spark8t` package is already part of the snap. However, if the python package is used outside of the snap context, please make sure that environment settings (described on the [tool's README](https://github.com/canonical/spark-k8s-toolkit-py)) are correctly configured.
 
 Furthermore, you need to make sure that `PYTHONPATH` contains the location where the `spark8t` libraries were installed within the snap (something like `/snap/spark-client/current/lib/python3.10/site-packages`)
 
-### Bind to Kubernetes
+## Bind to Kubernetes
 
 The following snipped allows you to import relevant environment variables
 into a confined object, among which there should an auto-inference of your 
@@ -57,7 +55,7 @@ service_accounts_namespace = kube_interface.exec(
 )
 ```
 
-### Manage Spark Service Accounts
+## Manage Spark Service Accounts
 
 All functionalities for managing Apache Spark service accounts are embedded within
 the `K8sServiceAccountRegistry` that can be instantiated using the `kube_interface`
@@ -73,7 +71,7 @@ registry = K8sServiceAccountRegistry(kube_interface)
 Once this object is instantiated we can perform several operations, as outlined 
 in the sections below
 
-#### Create new Apache Spark service accounts
+### Create new Apache Spark service accounts
 
 New Apache Spark service accounts can be created by first creating a `ServiceAccount`
 domain object, and optionally specifying extra-properties, e.g. 
@@ -99,7 +97,7 @@ service_account_id = registry.create(service_account)
 
 This returns an id, which is effectively the `{namespace}:{username}`, e.g. "default:my-spark".
 
-#### Listing spark service accounts
+### Listing spark service accounts
 
 Once Apache Spark service accounts have been created, these can be listed via
 
@@ -113,7 +111,7 @@ or retrieved using their ids
 retrieved_account = registry.get(service_account_id)
 ```
 
-#### Delete service account
+### Delete service account
 
 The registry can also be used to delete existing service accounts
 
@@ -127,7 +125,7 @@ or using an already existing `ServiceAccount` object:
 registry.delete(service_account.id)
 ```
 
-#### Manage Primary Accounts
+### Manage Primary Accounts
 
 `spark8t` and spark-client snap have the notation of the so-called 'primary' service account, the 
 one that would be chosen by default if no specific account is provided. The
@@ -149,7 +147,7 @@ The primary Apache Spark service account can be retrieved using
 primary_account = registry.get_primary()
 ```
 
-#### Manage configurations of Spark service accounts
+### Manage configurations of Spark service accounts
 
 Apache Spark service accounts can have a configuration that is provided (unless 
 overridden) during each execution of Spark jobs. This configuration is stored in the `PropertyFile` object, which can be provided on the creation of a `ServiceAccount` object (`extra_confs` argument). 

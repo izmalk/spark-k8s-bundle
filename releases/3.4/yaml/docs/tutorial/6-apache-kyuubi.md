@@ -1,6 +1,4 @@
 (tutorial-6-apache-kyuubi)=
-# 6. Apache Kyuubi 
-
 # 6. Using Apache Kyuubi
 
 Apache Kyuubi is a gateway to serverless SQL running on Kubernetes, bridging the gap between Apache Spark as a data processing framework and a data lakehouse platform.

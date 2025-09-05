@@ -1,8 +1,6 @@
 (tutorial-2-distributed-data-processing)=
 # 2. Distributed data processing
 
-# 2. Distributed data processing
-
 In this section, you will learn how to use PySpark and Spark Submit to run your Spark jobs. Make sure to finish setting up the environment from the [Environment setup](/tutorial/1-environment-setup) page.
 
 ## PySpark shell

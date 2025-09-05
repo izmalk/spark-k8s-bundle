@@ -1,6 +1,4 @@
 (explanation-security)=
-# Security
-
 # Security hardening guide
 
 This document provides an overview of security features and guidance for hardening the security of [Charmed Apache Spark K8s](https://github.com/canonical/spark-k8s-bundle), including setting up and managing a secure environment.
@@ -10,7 +8,7 @@ This document provides an overview of security features and guidance for hardeni
 The environment where applications operate can be divided in two components:
 
 1. Kubernetes
-2. Juju 
+2. Juju
 
 ### Kubernetes
 
@@ -60,7 +58,7 @@ In the following, we provide guidance on how to harden your deployment using:
 
 1. Base Images
 2. Apache Spark Security Upgrades
-3. Encryption 
+3. Encryption
 4. Authentication
 5. Monitoring and Auditing
 

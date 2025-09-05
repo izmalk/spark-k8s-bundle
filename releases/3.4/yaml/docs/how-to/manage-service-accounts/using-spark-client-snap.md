@@ -1,7 +1,5 @@
 (how-to-manage-service-accounts-using-spark-client-snap)=
-# Using spark-client snap
-
-## Manage Charmed Apache Spark Service Accounts
+# Manage Charmed Apache Spark Service Accounts
 
 This is an introduction to the CLI interface for creating, managing and configuring Charmed Apache Spark service accounts. 
 
@@ -13,7 +11,7 @@ Charmed Apache Spark service accounts are designed to work seamlessly with the I
 The following commands assume that you have administrative permission on the namespaces (or on the Kubernetes cluster) so that the corresponding resources (such as service accounts, secrets, roles, and role bindings) can be created and deleted. 
 ```
 
-### Create Service Account
+## Create Service Account
 
 In case using another namespace than `default`, make sure that it already exists in Kubernetes:
 
@@ -36,7 +34,7 @@ be used. (If another primary exists, the latter account primary flag will be set
 spark-client.service-account-registry create --username demouser --namespace demonamespace  --primary --properties-file /home/demouser/conf/spark-overrides.conf  --conf spark.app.name=demo-spark-app-overrides
 ```
 
-### List all service accounts
+## List all service accounts
 
 To display a list of the service accounts available, and whether they are primary or service accounts:
 
@@ -44,7 +42,7 @@ To display a list of the service accounts available, and whether they are primar
 spark-client.service-account-registry list
 ```
 
-### Add more entries to Service Account Configuration
+## Add more entries to Service Account Configuration
 
 To upsert into the existing configuration associated with the account:
 
@@ -52,7 +50,7 @@ To upsert into the existing configuration associated with the account:
 spark-client.service-account-registry add-config --username demouser --namespace demonamespace  --properties-file /home/demouser/conf/spark-overrides.conf  --conf spark.app.name=demo-spark-app-overrides
 ```
 
-### Remove entries from Service Account Configuration
+## Remove entries from Service Account Configuration
 
 To remove the specified keys from the existing configuration associated with the account:
 
@@ -60,7 +58,7 @@ To remove the specified keys from the existing configuration associated with the
 spark-client.service-account-registry remove-config --username demouser --namespace demonamespace  --conf conf.key1.to.remove --conf conf.key2.to.remove
 ```
 
-### Print configuration for a given Service Account 
+## Print configuration for a given Service Account
 
 To print the configuration for a given service account:
 
@@ -68,7 +66,7 @@ To print the configuration for a given service account:
 spark-client.service-account-registry get-config --username demouser --namespace demonamespace 
 ```
 
-### Delete Service Account Configuration
+## Delete Service Account Configuration
 
 To delete the configurations associated with a given service account:
 
@@ -76,7 +74,7 @@ To delete the configurations associated with a given service account:
 spark-client.service-account-registry clear-config --username demouser --namespace demonamespace 
 ```
 
-### Inspect Primary Service Account
+## Inspect Primary Service Account
 
 To find out which is the primary account, together with related configuration settings:
 
@@ -84,7 +82,7 @@ To find out which is the primary account, together with related configuration se
 spark-client.service-account-registry get-primary
 ```
 
-### Cleanup a Service Account
+## Cleanup a Service Account
 
 To delete the service account together with the other resources created, e.g. secrets, role, role-bindings, etc.:
 

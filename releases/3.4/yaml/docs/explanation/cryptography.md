@@ -1,8 +1,6 @@
 (explanation-cryptography)=
 # Cryptography
 
-# Cryptography
-
 This document describes the cryptography used by Charmed Apache Spark K8s.
 
 ## Resource checksums
@@ -11,7 +9,7 @@ All three charms in the Charmed Apache Spark solution employ pinned revisions of
 
 * Spark History Server
 * Integration Hub for Apache Spark
-* Charmed Apache Kyuubi 
+* Charmed Apache Kyuubi
 
 The Spark History Server and Charmed Apache Kyuubi use different flavours of the [Charmed Apache Spark Rock image](https://github.com/canonical/charmed-spark-rock/) whereas the Integration Hub for Apache Spark uses the [Integration Hub for Apache Spark Rock image](https://github.com/canonical/spark-integration-hub-rock).
 

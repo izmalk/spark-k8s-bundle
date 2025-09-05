@@ -1,6 +1,4 @@
 (how-to-use-gpu)=
-# Use GPU
-
 # Enabling GPU acceleration
 
 The Charmed Apache Spark solution offers an OCI image that supports the [Apache Spark Rapids plugin](https://github.com/canonical/charmed-spark-rock/pkgs/container/charmed-spark-gpu) that enables GPU acceleration on Spark jobs.
@@ -24,9 +22,10 @@ spec:
           nvidia.com/gpu: 1
 ```
 
-### Submitting a Spark job with GPU acceleration
+## Submit a Spark job with GPU acceleration
 
-With the usage of the `spark-client` snap, we can submit the desired Spark job adding some configuration options for enabling GPU acceleration:
+With the usage of the `spark-client` snap, we can submit the desired Spark job
+adding some configuration options for enabling GPU acceleration:
 
 ```shell
 spark-client.spark-submit \
@@ -46,4 +45,3 @@ The Apache Spark configuration options can also be set at the service account le
 
 The options above are the minimal set that is needed to enable the Apache Spark Rapids plugin. 
 For more information on available options, see the [full list](https://nvidia.github.io/spark-rapids/docs/configs.html).
-

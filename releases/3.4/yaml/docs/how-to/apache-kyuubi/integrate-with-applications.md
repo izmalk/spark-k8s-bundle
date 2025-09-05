@@ -1,8 +1,6 @@
 (how-to-apache-kyuubi-integrate-with-applications)=
 # Integrate with applications
 
-# Integrate with applications
-
 This guide shows how to integrate Charmed Apache Kyuubi K8s with both charmed and non-charmed applications.
 
 <!-- For developer information about how to integrate your own charmed application with Charmed Kyuubi, see [](). -->

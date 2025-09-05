@@ -1,5 +1,5 @@
 (how-to-index)=
-# How-To
+# How-To guides
 
 ```{toctree}
 :titlesonly:

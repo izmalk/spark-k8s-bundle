@@ -1,6 +1,4 @@
 (how-to-apache-kyuubi-encryption-and-passwords)=
-# Encryption and passwords
-
 # Manage encryption and passwords
 
 The Charmed Apache Kyuubi K8s charm supports TLS encryption for data in transit and uses [Juju secrets](https://documentation.ubuntu.com/juju/latest/reference/secret/#secret) to securely store and manage passwords.

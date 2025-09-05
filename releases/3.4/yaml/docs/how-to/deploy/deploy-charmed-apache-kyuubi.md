@@ -1,8 +1,6 @@
 (how-to-deploy-deploy-charmed-apache-kyuubi)=
 # Deploy Charmed Apache Kyuubi
 
-# Deploy Apache Kyuubi
-
 Charmed Apache Spark can work with [Apache Kyuubi](https://kyuubi.apache.org/), which is a distributed and multi-tenant gateway to provide serverless SQL on lakehouses.
 The following guide is to set up Apache Kyuubi for running SQL queries with Charmed Apache Spark.
 

@@ -1,8 +1,6 @@
 (tutorial-4-history-server)=
 # 4. History Server
 
-# 4. History Server
-
 The Apache Spark History Server is a user interface to monitor the metrics and performance of completed and running Apache Spark applications. The History Server is offered as a charm in the Charmed Apache Spark solution, which can be deployed via Juju.
 
 The Apache Spark History Server is most suitable for engineer running Spark jobs for troubleshooting, debugging, and general oversight. If you require a solution for systematic metrics capture and analysis with alerting, see the Canonical Observability Stack (COS) page of this tutorial.

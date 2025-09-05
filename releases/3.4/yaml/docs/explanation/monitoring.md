@@ -1,8 +1,6 @@
 (explanation-monitoring)=
 # Monitoring
 
-## Monitoring 
-
 An important requirement of a production-ready system is to provide a way for the admins to 
 monitor and actively observe the operation of the cluster. 
 Charmed Apache Spark delivers a comprehensive observability stack which includes:
@@ -21,7 +19,7 @@ connect among themselves, providing the monitoring capabilities of the solution.
 Before diving in, it is worth providing a brief reminder of the structure of 
 a Spark Job. 
 
-### Spark Job structure
+## Spark Job structure
 
 A Spark Job is generally composed by two main types of processes:
 
@@ -51,7 +49,7 @@ also store Apache Spark configuration centrally in Kubernetes as secrets, that m
 be readable/writable depending on their scope. Please refer to the explanations 
 about the [Charmed Apache Spark hierarchical configuration](/8956) for more information. 
 
-### Metrics
+## Metrics
 
 Spark jobs are ephemeral processes that may be long-lived in some cases but also very 
 short-lived on others. Spark jobs may be launch occasionally, or multiple Spark jobs
@@ -88,7 +86,7 @@ Once the metrics are ingested by Prometheus, they are then exposed to the user
 through [Grafana](https://grafana.com/) where they can be visualized in custom dashboards. 
 Custom alerting rules can also be defined and efficiently managed by [AlertManager](https://prometheus.io/docs/alerting/latest/alertmanager/).
 
-### Logs 
+## Logs
 
 Logs of driver and executors are stored on the pod local filesystem by default, 
 however they can also be forwarded to the [Loki](https://grafana.com/oss/loki/) via the `LOKI_URL`

@@ -1,14 +1,12 @@
 (how-to-deploy-deploy-charmed-apache-spark)=
 # Deploy Charmed Apache Spark
 
-## Deploy Charmed Apache Spark on K8s 
-
 Charmed Apache Spark comes with a bundled set of components that allow you to easily 
 manage Apache Spark workloads on K8s, providing integration with object storage,
 monitoring and log aggregation. For an overview on the different components
 that form Charmed Apache Spark, please refer to [this section](./path/to/explanation.md).
 
-### Prerequisites
+## Prerequisites
 
 Since Charmed Apache Spark will be managed by Juju, make sure that:
 
@@ -21,9 +19,9 @@ For other backends or K8s distributions other than MinIO on MicroK8s and S3 on E
 
 Charmed Apache Spark supports native integration with the Canonical Observability Stack (COS). To enable monitoring on top of Charmed Apache Spark, make sure that you have a Juju model with COS correctly deployed. To deploy COS on MicroK8s follow the step-by-step [tutorial](https://charmhub.io/topics/canonical-observability-stack/tutorials/install-microk8s) or refer to its [documentation](https://charmhub.io/topics/canonical-observability-stack) for more informations.
 
-### Preparation
+## Preparation
 
-#### Juju Model 
+### Juju Model 
 
 Make sure that you have a Juju model where you can deploy the Spark History server. In general, we advise to segregate juju applications belonging to different solutions, and therefore
 to have a dedicated model for `Spark` components, e.g.
@@ -36,14 +34,14 @@ juju add-model <juju_model>
 Note that this will create a K8s namespace to which the different Charmed Apache Spark components will be deployed.
 ```
 
-### Deploy Charmed Apache Spark
+## Deploy Charmed Apache Spark
 
 Charmed Apache Spark can be deployed via:
  
 * Native Juju YAML bundle and overlays
 * Terraform modules
 
-#### Using Juju bundles
+### Using Juju bundles
 
 Juju bundles are provided in the form of Jinja2 templates, for the following distribution:
 
@@ -74,7 +72,7 @@ Once the bundle is rendered, it can be simply deployed using
 juju deploy -m <juju_model> ./bundle.yaml
 ```
 
-##### S3 backends
+#### S3 backends
 
 The following table summarizes the properties to be specified for the main bundle
 
@@ -95,7 +93,7 @@ juju run s3/leader sync-s3-credentials \
 
 After this, the charms should start to receive the credentials and move into `active/idle` state.
 
-##### Azure storage backends
+#### Azure storage backends
 
 The following table summarizes the properties to be specified for the main Azure bundle.
 
@@ -135,7 +133,7 @@ The Azure Storage Integrator charm assumes hierarchical namespaces to have been 
 The directory `spark-events` needs to be created beforehand in the Azure container for the Spark History server to work. Please refer to the [How-To Setup Environment](https://discourse.charmhub.io/t/charmed-spark-k8s-documentation-how-to-setup-k8s-environment/11618#setting-up-the-object-storage-14) guide for more detailed instructions.
 ```
 
-##### Enabling COS
+#### Enabling COS
 
 COS can be enabled using an [overlay](https://github.com/canonical/spark-k8s-bundle/blob/main/releases/3.4/yaml/overlays/cos-integration.yaml.j2). 
 Similarly to the main bundle, the jinja2 template for the overlay can be rendered with the following properties:
@@ -151,7 +149,7 @@ Once the template is rendered, the COS-enabled Charmed Apache Spark bundle can b
 juju deploy -m <juju_model> ./bundle.yaml --overlay cos-integration.yaml
 ```
 
-#### Using Terraform
+### Using Terraform
 
 Make sure you have a working Terraform 1.8+ installed in your machine. You can install [Terraform](https://snapcraft.io/terraform) or [OpenTofu](https://snapcraft.io/terraform) via a snap.
 
@@ -200,4 +198,3 @@ To deploy Charmed Apache Spark using Terraform, use standard TF syntax:
 * `terraform destroy -var-file=<.tfvars.json_filename>`
 
 For more information about Terraform, please refer to the [official docs](https://developer.hashicorp.com/terraform/docs).
-

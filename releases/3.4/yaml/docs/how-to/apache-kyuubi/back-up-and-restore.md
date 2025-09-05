@@ -1,19 +1,27 @@
 (how-to-apache-kyuubi-back-up-and-restore)=
-# Back up and restore
-
 # How to to back up and restore data for Charmed Apache Kyuubi
 
-The Charmed Apache Kyuubi stores data files and the metastore separately. The data files are stored in an object storage (S3 compliant or Azure Storage) and the metadata is stored in a metastore inside an external PostgreSQL database.
+The Charmed Apache Kyuubi stores data files and the metastore separately.
+The data files are stored in an object storage (S3 compliant or Azure Storage)
+and the metadata is stored in a metastore inside an external PostgreSQL database.
 
-To back up an existing deployment of Charmed Apache Kyuubi and restore it into a different one, you need to have both the data files and the metadata.
+To back up an existing deployment of Charmed Apache Kyuubi and restore it into a different one,
+you need to have both the data files and the metadata.
 
 ## Back up and restore data
 
-Since the data files are stored in an object storage outside of the Kubernetes cluster and Juju, for their backup and restore processes please follow the documentation specific from the relevant cloud providers (for example, [AWS Backups](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html) and [Azure Backups](https://learn.microsoft.com/en-us/azure/backup/blob-backup-overview?tabs=operational-backup)).
+Since the data files are stored in an object storage outside of the Kubernetes cluster and Juju,
+for their backup and restore processes please follow the documentation specific from the relevant
+cloud providers (for example,
+[AWS Backups](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html) and
+[Azure Backups](https://learn.microsoft.com/en-us/azure/backup/blob-backup-overview?tabs=operational-backup)).
 
-When restoring a new Kyuubi deployment, just point the [s3-integrator](https://charmhub.io/s3-integrator) or [azure-storage-integrator](https://charmhub.io/azure-storage-integrator?channel=1/stable) to the existing bucket/container or to a new one with the restored content.
+When restoring a new Kyuubi deployment, just point the [s3-integrator](https://charmhub.io/s3-integrator) or
+[azure-storage-integrator](https://charmhub.io/azure-storage-integrator?channel=1/stable)
+to the existing bucket/container or to a new one with the restored content.
 
-In order to backup the metastore more steps are needed, and this requires a backup of the PostgreSQL database that stores that information.
+In order to backup the metastore more steps are needed,
+and this requires a backup of the PostgreSQL database that stores that information.
 
 ### Back up the metastore
 
@@ -113,4 +121,3 @@ juju remove-relation <new-metastore-backup> <new-metastore>
 ```
 
 Now the new deployment is completely restored with the information present in the original deployment.
-

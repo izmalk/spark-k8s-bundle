@@ -1,8 +1,6 @@
 (how-to-apache-kyuubi-external-metastore)=
 # External metastore
 
-# External metastore
-
 By default, Apache Kyuubi uses an embedded database to manage the metadata of persistent relational entities.
 However, this database is limited to a single unit and is not persisted should the pod be rescheduled.
 

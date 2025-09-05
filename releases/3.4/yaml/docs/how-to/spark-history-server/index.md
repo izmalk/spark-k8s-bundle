@@ -1,5 +1,5 @@
 (how-to-spark-history-server-index)=
-# Spark-History-Server
+# Spark History Server
 
 ```{toctree}
 :titlesonly:

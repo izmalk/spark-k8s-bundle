@@ -1,6 +1,4 @@
 (how-to-enable-monitoring)=
-# Enable monitoring
-
 ## Enable and configuring monitoring
 
 Charmed Apache Spark supports native integration with the Canonical Observability Stack (COS). If you want to enable monitoring on top of Charmed Apache Spark, make sure that you have a Juju model with COS correctly deployed.

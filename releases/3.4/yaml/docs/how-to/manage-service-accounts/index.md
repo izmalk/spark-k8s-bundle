@@ -1,5 +1,5 @@
 (how-to-manage-service-accounts-index)=
-# Manage-Service-Accounts
+# Manage service accounts
 
 ```{toctree}
 :titlesonly:

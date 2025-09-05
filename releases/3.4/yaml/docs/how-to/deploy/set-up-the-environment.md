@@ -1,7 +1,5 @@
 (how-to-deploy-set-up-the-environment)=
-# Set up the environment
-
-## How to set up a K8s cluster for Apache Spark
+# How to set up a K8s cluster for Apache Spark
 
 The Charmed Apache Spark solution requires an environment with:
 
@@ -10,7 +8,7 @@ The Charmed Apache Spark solution requires an environment with:
 
 In the following guide, we provide details on the technologies currently supported and instructions on how these layers can be set up.
 
-### Kubernetes
+## Kubernetes
 
 The Charmed Apache Spark solution runs on top of several K8s distributions. We recommend using versions above or equal to `1.29`. 
 Earlier versions may still be working, although we do not explicitly test them. 
@@ -23,7 +21,7 @@ There are multiple ways that a K8s cluster can be deployed. We provide full comp
 
 The how-to guide below shows you how to set up these to be used with Charmed Apache Spark. 
 
-#### MicroK8s
+### MicroK8s
 
 [MicroK8s](https://microk8s.io/) is the mightiest tiny Kubernetes distribution around. It can be easily installed locally via snaps
 
@@ -33,7 +31,7 @@ sudo snap install microk8s --classic
 
 When installing MicroK8s, it is recommended to configure MicroK8s in a way, so that there exists a user that has admin rights on the cluster. 
 
-```bash 
+```bash
 sudo snap alias microk8s.kubectl kubectl
 sudo usermod -a -G microk8s ${USER}
 mkdir -p ~/.kube
@@ -50,29 +48,29 @@ microk8s status --wait-ready
 
 Export the Kubernetes config file associated with admin rights and store it in the $KUBECONFIG file, e.g. `~/.kube/config`: 
 
-```bash 
+```bash
 export KUBECONFIG=path/to/file # Usually ~/.kube/config
 microk8s config | tee ${KUBECONFIG}
 ```
 
-Enable the K8s features required by the Apache Spark Client snap 
+Enable the K8s features required by the Apache Spark Client snap:
 
-```
+```bash
 microk8s.enable dns rbac storage hostpath-storage
 ```
 
-The MicroK8s cluster is now ready to be used. 
+The MicroK8s cluster is now ready to be used.
 
-##### External LoadBalancer
+#### External LoadBalancer
 
 If you want to expose the Spark History Server UI via a Traefik ingress, we need to enable an external loadbalancer:
 
-```
+```bash
 IPADDR=$(ip -4 -j route get 2.2.2.2 | jq -r '.[] | .prefsrc')
 microk8s enable metallb:$IPADDR-$IPADDR
 ```
 
-#### AWS EKS
+### AWS EKS
 
 To deploy an EKS cluster, make sure that you have working CLI tools properly installed on your edge machine:
 
@@ -86,7 +84,7 @@ To deploy an EKS cluster, make sure that you have working CLI tools properly ins
 
 Make sure that your service account (configured in AWS) has the right permission to create and manage EKS clusters. In general, we recommend the use of profiles when having multiple accounts.
 
-##### Creating a cluster
+#### Creating a cluster
 
 An EKS cluster can be created using `eksctl`, the AWS Management Console, or the AWS CLI. In the following, we will use `eksctl`.
 
@@ -137,7 +135,7 @@ eksctl create cluster -f cluster.yaml
 
 The EKS cluster creation process may take several minutes. The cluster creation process should already update the `KUBECONFIG` file with the new cluster information. By default, `eksctl` creates a user that generates a new access token on the fly via the `aws` CLI. However, this conflicts with the `spark-client` snap that is strictly confined and does not have access to the `aws` command. Therefore, we recommend you to manually retrieve a token:
 
-```bash 
+```bash
 aws eks get-token --region <AWS_REGION_NAME> --cluster-name spark-cluster --output json
 ```
 
@@ -150,10 +148,9 @@ users:
     token: <AWS_TOKEN>
 ```
 
-The EKS cluster is now ready to be used. 
+The EKS cluster is now ready to be used.
 
-
-#### Azure AKS
+### Azure AKS
 
 To deploy an Azure Kubernetes Service (AKS) cluster, you'd need to make sure you have Azure CLI properly installed and authenticated.
 
@@ -180,7 +177,7 @@ az login --use-device-code
 
 Once you run the login command, you should see an output similar to the following in the console:
 
-```txt
+```text
 To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code XXXXXXX to authenticate.
 ```
 
@@ -199,7 +196,7 @@ echo $?
 
 The command should list the storage accounts in your Azure cloud (if any) and the return code printed by `echo $?` should be `0` if the command was successful.
 
-##### Creating a cluster
+#### Creating a cluster
 
 Now that the Azure Cloud and CLI are working, start creating the AKS cluster resources.
 This can be done in multiple ways -- using the browser console, using `az` CLI directly, or by using Azure Terraform provider.
@@ -253,7 +250,7 @@ terraform output
 # resource_group_name = "TestSparkAKSRG"
 ```
 
-##### Generating Kubeconfig file
+#### Generating Kubeconfig file
 
 To generate the Kubeconfig file for connecting the client to the newly created cluster:
 
@@ -263,10 +260,9 @@ az aks get-credentials --resource-group <resource_group_name> --name <aks_cluste
 
 The AKS cluster is now ready to be used.
 
+## Object storage
 
-### Object storage
-
-Object storage persistence integration with Charmed Apache Spark is critical for: 
+Object storage persistence integration with Charmed Apache Spark is critical for:
 
 * reading and writing application data to be used in Spark jobs
 * storing Spark jobs logs to be then exposed via Charmed Apache Spark History Server
@@ -289,12 +285,12 @@ This can be done both on S3 and on Azure DataLake Gen2 Storage. Although there a
 in the following we recommend you to use snap clients. 
 Alternatively, use [Python libraries](https://github.com/canonical/spark-k8s-bundle/blob/94ac51d519cece9dc6810c7aaa0144a28cd7989b/python/spark_test/core/s3.py).
 
-#### S3-compatible object storages
+### S3-compatible object storages
 
 To connect Charmed Apache Spark with an S3-compatible object storage, 
 the following configurations need to be specified:
 
-* `access_key` 
+* `access_key`
 * `secret_key`
 * `endpoint`
 * `bucket`
@@ -303,13 +299,13 @@ the following configurations need to be specified:
 Leveraging on standard S3 API, you can use the `aws-cli` snap client to perform operations with the
 S3 service, like creating buckets, uploading new content, inspecting the structure, and removing data.
 
-To install the AWS CLI client, use 
+Install the AWS CLI client:
 
 ```shell
 sudo snap install aws-cli --classic
 ```
 
-The client can then be configured using the parameters above with 
+The client can then be configured using the parameters above:
 
 ```shell
 aws configure set aws_access_key_id <S3_ACCESS_KEY>
@@ -318,20 +314,13 @@ aws configure set endpoint_url <S3_ENDPOINT>
 aws configure set default.region <S3_REGION> # Optional for AWS only
 ```
 
-Test that the AWS CLI client is properly working with 
+Test that the AWS CLI client is properly working:
 
 ```shell
 aws s3 ls
 ```
 
-##### Supported S3 backends
-
-In the following sections, we show how to setup and extract information for:
-
-* MicroK8s MinIO 
-* AWS S3
-
-###### MicroK8s MinIO
+#### MicroK8s MinIO
 
 If you have already a MicroK8s cluster running, you can enable the MinIO storage with the dedicated addon
 
@@ -353,7 +342,7 @@ Configure the AWS CLI snap with these parameters, as shown above. After that, yo
 aws s3 mb s3://<S3_BUCKET>
 ```
 
-###### AWS S3
+#### AWS S3
 
 To use AWS S3, you need to have an AWS user that has permission to use S3 resource for reading and writing. 
 You can create a new user or use an existing one, as long as you grant permission to S3, either centrally using the IAM console 
@@ -369,7 +358,7 @@ Note that buckets will be associated to a given AWS region. Once the bucket is c
 the `access_key` and the `secret_key` of your service account, also used for authenticating with the AWS CLI profile. 
 The endpoint of the service is `https://s3.<S3_REGION>.amazonaws.com`.
 
-##### Setting up the object storage
+#### Setting up the object storage
 
 To create a folder on an existing bucket, just place an empty path object `spark-events`:
 
@@ -379,7 +368,7 @@ aws s3api put-object --bucket <S3_BUCKET> --key spark-events
 
 The S3-object storage should now be ready to be used by Spark jobs to store their logs. 
 
-#### Azure Storage
+### Azure Storage
 
 Charmed Apache Spark provides out-of-the-box support also for the following Azure storage backends: 
 
@@ -397,7 +386,7 @@ the following configurations need to be specified:
 * `storage_key`
 * `container`
 
-##### Setting up the object storage
+#### Setting up the object storage
 
 You can use the `azcli` snap client to perform operations with the Azure storage services, 
 like creating buckets, uploading new content, inspecting the structure, and removing data.
@@ -467,4 +456,3 @@ You may now enter the PySpark shell and import the package:
 ```python
 import numpy as np
 ```
-

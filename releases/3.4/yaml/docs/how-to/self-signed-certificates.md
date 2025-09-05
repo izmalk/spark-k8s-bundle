@@ -1,6 +1,4 @@
 (how-to-self-signed-certificates)=
-# Self-signed certificates
-
 # Support self-signed certificates in Apache Spark Client snap
 
 The Apache Spark Client snap offers the possibility to submit jobs to a Kubernetes cluster with the `spark-submit` command. 
@@ -19,4 +17,3 @@ spark-client.import-certificate <CERTIFICATE_ALIAS> <CERTIFICATE_PATH>
 where `<CERTIFICATE_ALIAS>` is the alias associated to the certificate and the `<CERTIFICATE_PATH>` is the path of the desired certificate. Please be sure that the path of the certificate is accessible by the Apache Spark Client snap. 
 
 For more information, see the blog post on [how to deploy Charmed Apache Spark, with MAAS, Kubernetes and Ceph with self-signed certificates](https://ubuntu.com/blog/deploy-an-on-premise-data-hub-with-canonical-maas-spark-kubernetes-and-ceph).
-

@@ -1,7 +1,5 @@
 (explanation-component-overview)=
-# Component overview
-
-## Charmed Apache Spark components overview
+# Charmed Apache Spark components overview
 
 The Charmed Apache Spark solution bundles the following components:
 

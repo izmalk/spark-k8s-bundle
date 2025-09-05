@@ -1,8 +1,6 @@
 (tutorial-3-data-stream-processing)=
 # 3. Data stream processing
 
-# 3. Data stream processing
-
 Apache Spark comes with a built-in support for streaming workloads via Apache Spark Streaming. Charmed Apache Spark takes it a step further by making it easy to integrate with Apache Kafka using Juju.
 
 Apache Kafka is a distributed event-store with a producer/consumer API, designed to achieve massive throughput with clustering for horizontal scalability and high availability. For more information about Apache Kafka, see the [Apache Kafka project page](https://kafka.apache.org/), and for Apache Spark Streaming, see the [Apache Spark project documentation](https://spark.apache.org/docs/latest/streaming-programming-guide.html).

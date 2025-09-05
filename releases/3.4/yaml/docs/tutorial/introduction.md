@@ -1,6 +1,4 @@
 (tutorial-introduction)=
-# Introduction
-
 # Charmed Apache Spark Solution Tutorial
 
 Charmed Apache Spark provides utility client applications and additional components for seamless deployment on Kubernetes. For a detailed overview of its components, see the [Components overview](/explanation/component-overview) page.

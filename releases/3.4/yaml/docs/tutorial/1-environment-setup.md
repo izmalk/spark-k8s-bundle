@@ -1,8 +1,6 @@
 (tutorial-1-environment-setup)=
 # 1. Environment setup
 
-# 1. Environment setup
-
 Charmed Apache Spark solution is based on the `spark-client` snap that can run Spark jobs on a Kubernetes cluster.
 
 In this step of the tutorial, we will prepare a lightweight K8s environment, `spark-client` snap, and some additional components required for this tutorial. We are going to use [Multipass](https://canonical.com/multipass) to create a virtual environment and set up the following software:

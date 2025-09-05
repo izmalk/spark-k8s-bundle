@@ -1,6 +1,4 @@
 (how-to-apache-kyuubi-upgrade)=
-# Upgrade
-
 # How to upgrade
 
 Charmed Apache Kyuubi K8s can perform in-place upgrades to update the charm and the workload to a newer version.
