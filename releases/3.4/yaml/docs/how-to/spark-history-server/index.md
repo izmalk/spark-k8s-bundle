@@ -3,10 +3,8 @@
 
 ```{toctree}
 :titlesonly:
-:maxdepth: 2
-:glob:
 :hidden:
 
-*
-*/index
+Authentication and authorisation<auth.md>
+Expose web GUI<expose-web-gui.md>
 ```

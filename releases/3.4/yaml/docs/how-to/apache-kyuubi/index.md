@@ -1,12 +1,14 @@
 (how-to-apache-kyuubi-index)=
-# Apache-Kyuubi
+# Apache Kyuubi
 
 ```{toctree}
 :titlesonly:
-:maxdepth: 2
-:glob:
 :hidden:
 
-*
-*/index
+Encryption and passwords<encryption-and-passwords.md>
+External connections<external-connections.md>
+External metastore<external-metastore.md>
+Integrate with apps<integrate-with-applications.md>
+Backups<back-up-and-restore.md>
+Upgrades<upgrade.md>
 ```

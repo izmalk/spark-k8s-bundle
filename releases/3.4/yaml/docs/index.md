@@ -29,13 +29,11 @@ Charmed Apache Spark is a distribution of Apache Spark. It’s an open-source pr
 
 ```{toctree}
 :titlesonly:
-:maxdepth: 2
-:glob:
 :hidden:
 
 Home <self>
-tutorial*/index
-how*/index
-reference*/index
-explanation*/index
+Tutorial <tutorial/index>
+how-to/index
+reference/index
+explanation/index
 ```

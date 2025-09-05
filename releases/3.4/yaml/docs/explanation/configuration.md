@@ -1,5 +1,5 @@
 (explanation-configuration)=
-# Apache Spark Configuration Management
+# Configuration management
 
 Apache Spark comes with a wide range of [configuration properties](https://spark.apache.org/docs/3.4.2/configuration.html#available-properties) that can be fed into Apache Spark using a single property file, e.g. `spark.properties`, or by passing configuration values on the command line, as an argument to `spark-submit`, `pyspark` and `spark-shell`.
 

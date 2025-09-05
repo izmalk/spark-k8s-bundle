@@ -3,10 +3,9 @@
 
 ```{toctree}
 :titlesonly:
-:maxdepth: 2
-:glob:
 :hidden:
 
-*
-*/index
+Using Integration Hub<using-integration-hub.md>
+Using Python<using-python.md>
+Using Spark-client<using-spark-client-snap.md>
 ```

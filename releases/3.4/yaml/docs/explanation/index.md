@@ -3,10 +3,12 @@
 
 ```{toctree}
 :titlesonly:
-:maxdepth: 2
-:glob:
 :hidden:
 
-*
-*/index
+component-overview.md
+configuration.md
+monitoring.md
+security.md
+cryptography.md
+trademarks.md
 ```

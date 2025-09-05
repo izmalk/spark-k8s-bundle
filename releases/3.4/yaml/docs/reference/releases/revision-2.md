@@ -1,6 +1,4 @@
 (reference-releases-revision-2)=
-# Revision 2
-
 # Charmed Apache Spark (revision 2)
 
 Jul 29, 2025
