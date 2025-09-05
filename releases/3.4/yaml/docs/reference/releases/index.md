@@ -1,0 +1,12 @@
+(reference-releases-index)=
+# Releases
+
+```{toctree}
+:titlesonly:
+:maxdepth: 2
+:glob:
+:hidden:
+
+*
+*/index
+```
