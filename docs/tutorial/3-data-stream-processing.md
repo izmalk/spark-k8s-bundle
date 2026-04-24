@@ -40,6 +40,19 @@ spark-client.service-account-registry create \
 The Integration Hub we deployed in the environment setup step will automatically push the S3 credentials
 to this new service account. Verify this before continuing:
 
+<!-- test:run
+# Wait for the Integration Hub to push S3 config to the new service account
+for i in $(seq 1 60); do
+  config=$(spark-client.service-account-registry get-config --username spark --namespace spark-streaming 2>&1)
+  if echo "$config" | grep -q "fs.s3a.endpoint"; then
+    echo "Integration Hub pushed S3 config after $((i * 5)) seconds"
+    break
+  fi
+  [ "$i" -eq 60 ] && echo "WARNING: S3 config not found after 300s" && exit 1
+  sleep 5
+done
+-->
+
 ```shell
 spark-client.service-account-registry get-config \
   --username spark --namespace spark-streaming
@@ -47,21 +60,13 @@ spark-client.service-account-registry get-config \
 
 You should see the S3 configuration properties in the output.
 
-Now, let's create a minimal Apache Kafka and Apache ZooKeeper setup.
-This can be done quickly and easily using the [`zookeeper-k8s`](https://github.com/canonical/zookeeper-k8s-operator) and [`kafka-k8s`](https://charmhub.io/kafka-k8s) charms.
-Although this setup is not highly available, using single instances for both should be enough to understand the underlying concepts.
+Now, let's deploy Apache Kafka in [KRaft](https://kafka.apache.org/documentation/#kraft) mode.
+This can be done quickly and easily using the [`kafka-k8s`](https://charmhub.io/kafka-k8s) charm.
+KRaft mode eliminates the need for a separate Apache ZooKeeper cluster by embedding the controller directly into the Kafka node.
+Although this setup is not highly available, using a single instance should be enough to understand the underlying concepts.
 
 ```shell
-juju deploy zookeeper-k8s --trust
-juju deploy kafka-k8s --trust
-```
-
-<!-- test:await-idle --timeout 1200 --allow-blocked kafka-k8s,zookeeper-k8s -->
-
-Once the charms are deployed, integrate them:
-
-```shell
-juju integrate kafka-k8s zookeeper-k8s
+juju deploy kafka-k8s --trust --config roles=broker,controller
 ```
 
 <!-- test:await-idle --timeout 1200 -->
@@ -74,26 +79,20 @@ Once installed, let's see the current status of the Juju model with the followin
 watch -c juju status --color
 ```
 
-Once all the charms have been deployed and integrated (you may need to wait some time), output similar to the following should appear:
+Once the charm has been deployed (you may need to wait some time), output similar to the following should appear:
 
 ```text
 Model            Controller      Cloud/Region        Version  SLA          Timestamp
-spark-streaming  spark-tutorial  microk8s/localhost  3.1.7    unsupported  10:13:55Z
+spark-streaming  spark-tutorial  microk8s/localhost  3.6.14   unsupported  10:13:55Z
 
-App            Version  Status  Scale  Charm          Channel  Rev  Address         Exposed  Message
-kafka-k8s               active      1  kafka-k8s      3/edge    47  10.152.183.242  no       
-zookeeper-k8s           active      1  zookeeper-k8s  3/edge    42  10.152.183.87   no       
+App        Version  Status  Scale  Charm      Channel   Rev  Address         Exposed  Message
+kafka-k8s           active      1  kafka-k8s  4/stable  111  10.152.183.242  no       
 
-Unit              Workload  Agent  Address      Ports  Message
-kafka-k8s/0*      active    idle   10.1.29.184         
-zookeeper-k8s/0*  active    idle   10.1.29.182 
+Unit           Workload  Agent  Address      Ports  Message
+kafka-k8s/0*   active    idle   10.1.29.184         
 ```
 
-As you can see, both Apache Kafka and Apache ZooKeeper charms are in the "active" status.
-
-```{note}
-If you see `kafka-k8s` unit with the `zookeeper credentials not created yet` message and waiting - just wait a few more minutes (up to 5-10) for the charms to synchronize and share credentials with each other.
-```
+As you can see, the Apache Kafka charm is in the "active" status, running in KRaft mode without a separate ZooKeeper dependency.
 
 ## Generating data stream
 
@@ -117,17 +116,14 @@ Model            Controller      Cloud/Region        Version  SLA          Times
 spark-streaming  spark-tutorial  microk8s/localhost  3.6.14   unsupported  10:17:32Z
 
 App             Version  Status  Scale  Charm           Channel       Rev  Address         Exposed  Message
-kafka-k8s                active      1  kafka-k8s       3/stable      47  10.152.183.242   no       
+kafka-k8s                active      1  kafka-k8s       4/stable     111  10.152.183.242   no       
 kafka-test-app           active      3  kafka-test-app  latest/stable  8  10.152.183.167   no       Topic spark-streaming-store enabled with process producer
-zookeeper-k8s            active      1  zookeeper-k8s   3/stable      42  10.152.183.87    no       
 
 Unit               Workload  Agent  Address      Ports  Message
 kafka-k8s/0*       active    idle   10.1.29.184         
 kafka-test-app/0   active    idle   10.1.29.185         Topic spark-streaming-store enabled with process producer
 kafka-test-app/1   active    idle   10.1.29.186         Topic spark-streaming-store enabled with process producer
 kafka-test-app/2*  active    idle   10.1.29.187         Topic spark-streaming-store enabled with process producer
-
-zookeeper-k8s/0*   active    idle   10.1.29.182  
 ```
 
 Now messages will be generated and written to Apache Kafka periodically by `kafka-test-app`.
@@ -148,11 +144,10 @@ Once this integration is complete, `juju status` should appear something similar
 Model            Controller      Cloud/Region        Version  SLA          Timestamp
 spark-streaming  spark-tutorial  microk8s/localhost  3.1.7    unsupported  10:22:14Z
 
-App              Version  Status  Scale  Charm            Channel  Rev  Address         Exposed  Message
-data-integrator           active      1  data-integrator  edge      15  10.152.183.18   no       
-kafka-k8s                 active      1  kafka-k8s        3/edge    47  10.152.183.242  no       
-kafka-test-app            active      3  kafka-test-app   edge       8  10.152.183.167  no       Topic spark-streaming-store enabled with process producer
-zookeeper-k8s             active      1  zookeeper-k8s    3/edge    42  10.152.183.87   no       
+App              Version  Status  Scale  Charm            Channel        Rev  Address         Exposed  Message
+data-integrator           active      1  data-integrator  latest/stable   15  10.152.183.18   no       
+kafka-k8s                 active      1  kafka-k8s        4/stable       111  10.152.183.242  no       
+kafka-test-app            active      3  kafka-test-app   latest/stable    8  10.152.183.167  no       Topic spark-streaming-store enabled with process producer
 
 Unit                Workload  Agent  Address      Ports  Message
 data-integrator/0*  active    idle   10.1.29.189         
@@ -160,7 +155,6 @@ kafka-k8s/0*        active    idle   10.1.29.184
 kafka-test-app/0    active    idle   10.1.29.185         Topic spark-streaming-store enabled with process producer
 kafka-test-app/1    active    idle   10.1.29.186         Topic spark-streaming-store enabled with process producer
 kafka-test-app/2*   active    idle   10.1.29.187         Topic spark-streaming-store enabled with process producer
-zookeeper-k8s/0*    active    idle   10.1.29.182 
 ```
 
 Now that `data-integrator` is deployed and integrated with `kafka-k8s`, we can get the credentials to connect to Apache Kafka by running the `get-credentials` action exposed by the `data-integrator` charm:
@@ -185,7 +179,6 @@ kafka:
   tls: disabled
   topic: spark-streaming-store
   username: relation-10
-  zookeeper-uris: zookeeper-k8s-0.zookeeper-k8s-endpoints:2181/kafka-k8s
 ok: "True"
 ```
 
