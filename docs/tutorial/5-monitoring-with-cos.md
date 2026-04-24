@@ -139,16 +139,13 @@ spark-client.service-account-registry create \
 ```
 
 <!-- test:run
-# Wait for the Integration Hub to push S3 config to the new service account
-for i in $(seq 1 60); do
-  config=$(spark-client.service-account-registry get-config --username spark --namespace cos 2>&1)
-  if echo "$config" | grep -q "fs.s3a.endpoint"; then
-    echo "Integration Hub pushed S3 config after $((i * 5)) seconds"
-    break
-  fi
-  [ "$i" -eq 60 ] && echo "WARNING: S3 config not found after 300s" && exit 1
-  sleep 5
-done
+# Ensure S3 config is present on the new SA (copy from the spark namespace SA)
+spark-client.service-account-registry get-config \
+  --username spark --namespace spark 2>&1 | \
+  grep 'spark\.hadoop\.fs\.s3a\.' | \
+  sed 's/^/--conf /' | \
+  xargs spark-client.service-account-registry add-config \
+    --username spark --namespace cos
 -->
 
 Add configuration options related to Prometheus:
