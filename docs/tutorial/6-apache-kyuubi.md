@@ -332,11 +332,21 @@ kyuubi:
 ok: "True"
 ```
 
-Test the server certificate by requesting it using `openssl` on the endpoint returned above:
+Test the server certificate. First, extract the endpoint:
 
 ```shell
-sudo snap install yq
-openssl s_client -showcerts -connect $(juju run data-integrator/0 get-credentials | yq ".kyuubi.endpoints") < /dev/null
+ENDPOINT=$(juju run data-integrator/0 get-credentials --format=json | jq -r '."data-integrator/0".results.kyuubi.endpoints')
+```
+
+<!-- test:run
+echo "DEBUG: ENDPOINT=[${ENDPOINT}]"
+echo "${ENDPOINT}" | od -c
+-->
+
+Now use `openssl` with the extracted endpoint to verify the certificate:
+
+```shell
+openssl s_client -showcerts -connect "${ENDPOINT}" < /dev/null
 ```
 
 The resulted output should include issuer CN `Tutorial CA`.
@@ -344,7 +354,7 @@ The resulted output should include issuer CN `Tutorial CA`.
 To connect to Charmed Apache Kyuubi K8s using the spark-client's bundled `beeline` client, import the certificate in the spark-client snap:
 
 ```shell
-juju run data-integrator/0 get-credentials | yq ".kyuubi.tls-ca" > ~/cert.pem
+juju run data-integrator/0 get-credentials --format=json | jq -r '."data-integrator/0".results.kyuubi."tls-ca"' > ~/cert.pem
 spark-client.import-certificate tutorial-cert ~/cert.pem
 ```
 
